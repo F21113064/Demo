@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Image Search - Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .progress {
+            height: 12px;
+            border-radius: 6px;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .match-item {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .confidence-badge {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+        }
+        .confidence-high {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center my-4">
+                    <i class="bi bi-search"></i> PDF Image Search
+                </h1>
+                <p class="text-center text-muted">
+                    Upload a PDF file and an image to search for within the PDF
+                </p>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form id="searchForm">
+                            <div class="mb-3">
+                                <label for="pdfFile" class="form-label">
+                                    <i class="bi bi-file-earmark-pdf"></i> PDF File
+                                </label>
+                                <input type="file" class="form-control" id="pdfFile" name="pdf_file" 
+                                       accept=".pdf">
+                                <div class="form-text">Maximum file size: 50MB</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="imageFile" class="form-label">
+                                    <i class="bi bi-image"></i> Image to Search
+                                </label>
+                                <input type="file" class="form-control" id="imageFile" name="image_file" 
+                                       accept=".jpg,.jpeg,.png,.bmp,.tiff,.tif">
+                                <div class="form-text">Supported: JPG, PNG, BMP, TIFF</div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg" id="searchBtn">
+                                    <i class="bi bi-search"></i> Start Search
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Progress Section (Demo) -->
+                <div id="progressSection" class="card shadow mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-hourglass-split"></i> Search Progress
+                        </h5>
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 75%">75%</div>
+                        </div>
+                        <div class="text-muted">Processing page 3 of 5...</div>
+                        <div class="mt-2 small text-muted">
+                            Page 3 of 5 | Matches found: 2
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Section (Demo) -->
+                <div id="resultsSection" class="card shadow mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-check-circle"></i> Search Results
+                        </h5>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">Total Matches</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">Pages with Matches</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">88%</div>
+                                <div class="stat-label">Avg. Confidence</div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        <h6>Matches by Page:</h6>
+                        
+                        <div class="mb-3">
+                            <h6 class="mb-2">
+                                <i class="bi bi-file-text"></i> Page 1 
+                                <span class="badge bg-primary">1 match</span>
+                            </h6>
+                            <div class="match-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="fw-bold">Match #1</div>
+                                        <small class="text-muted">
+                                            Position: (100, 150) | 
+                                            Size: 200×100 | 
+                                            Scale: 1.00x
+                                        </small>
+                                    </div>
+                                    <span class="confidence-badge confidence-high">
+                                        95% confidence
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6 class="mb-2">
+                                <i class="bi bi-file-text"></i> Page 3 
+                                <span class="badge bg-primary">1 match</span>
+                            </h6>
+                            <div class="match-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="fw-bold">Match #3</div>
+                                        <small class="text-muted">
+                                            Position: (250, 300) | 
+                                            Size: 180×90 | 
+                                            Scale: 0.85x
+                                        </small>
+                                    </div>
+                                    <span class="confidence-badge confidence-high">
+                                        87% confidence
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6 class="mb-2">
+                                <i class="bi bi-file-text"></i> Page 5 
+                                <span class="badge bg-primary">1 match</span>
+                            </h6>
+                            <div class="match-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="fw-bold">Match #5</div>
+                                        <small class="text-muted">
+                                            Position: (50, 200) | 
+                                            Size: 220×110 | 
+                                            Scale: 1.20x
+                                        </small>
+                                    </div>
+                                    <span class="confidence-badge confidence-high">
+                                        82% confidence
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
