@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer with Smart Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Note: PDF.js would normally be loaded from CDN, but for this demo we'll use browser's built-in PDF viewer -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PDF Viewer with Smart Search</h1>
+            <div class="upload-section">
+                <input type="file" id="pdfFile" accept=".pdf" />
+                <button id="uploadBtn">Upload PDF</button>
+                <span id="uploadStatus"></span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- PDF Viewer Section -->
+            <div class="pdf-section">
+                <div class="pdf-controls">
+                    <span id="pdfInfo">No PDF loaded</span>
+                    <button id="refreshBtn">Refresh</button>
+                </div>
+                <div class="pdf-viewer">
+                    <iframe id="pdfFrame" src="" style="width: 100%; height: 100%; border: none; display: none;"></iframe>
+                    <div id="noPdfMessage" class="no-pdf-message">
+                        Please upload a PDF file to view it here
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-controls">
+                    <h2>Search PDF Content</h2>
+                    <div class="search-input-group">
+                        <input type="text" id="searchInput" placeholder="Enter search terms..." />
+                        <button id="searchBtn">Search</button>
+                        <button id="clearBtn">Clear</button>
+                    </div>
+                </div>
+                
+                <div class="search-results">
+                    <div id="searchStatus"></div>
+                    <div id="resultsContainer"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
